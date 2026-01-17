@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f2ff;
+  --content-background: #ffffff;
+  --header-background: #1C1930;
+  --shadow-header: 0px 4px 4px 0px #00000040;
+  --title: #1F1283;
+  --description: #717171;
+  --accent: #695CCD;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-content-background: var(--content-background);
+  --color-header-background: var(--header-background);
+  --shadow-header: var(--shadow-header);
+  --color-title: var(--title);
+  --color-description: var(--description);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-encode-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Custom design tokens */
+  --radius-button: 26px;
+  --leading-22: 22px;
+  --spacing-card-x: 42px;
+}
+
+@layer utilities {
+  .hover-zoom {
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .hover-zoom:hover {
+    transform: scale(1.05);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hover-zoom {
+      transition: none;
+    }
+    .hover-zoom:hover {
+      transform: none;
+    }
+  }
+}
