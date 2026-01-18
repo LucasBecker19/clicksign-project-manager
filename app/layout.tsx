@@ -3,7 +3,7 @@ import { Encode_Sans_Semi_Expanded } from "next/font/google";
 import "./globals.css";
 
 const encodeSans = Encode_Sans_Semi_Expanded({
-  weight: ['400', '600'],
+  weight: ['400', '600', '700'],
   subsets: ["latin"],
   variable: "--font-encode-sans",
 });
