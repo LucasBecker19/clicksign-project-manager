@@ -10,6 +10,7 @@
   --accent: #695CCD;
   --text-dark: #1E1E1E;
   --line: #ECECEC;
+  --line-darker: #DCDCDC;
 }
 
 @theme inline {
@@ -22,6 +23,7 @@
   --color-accent: var(--accent);
   --color-text-dark: var(--text-dark);
   --color-line: var(--line);
+  --color-line-darker: var(--line-darker);
   --font-sans: var(--font-encode-sans), ui-sans-serif, system-ui, sans-serif;
   /* Custom design tokens */
   --radius-button: 26px;
@@ -50,5 +52,21 @@
 
   .heading-2xl {
     @apply text-title font-semibold text-2xl leading-none;
+  }
+
+  .form-title {
+    @apply font-medium text-lg leading-[22px] align-bottom text-accent;
+  }
+
+  .form-required-label {
+    @apply font-normal text-sm leading-[22px] align-bottom text-description;
+  }
+
+  .form-input {
+    @apply mt-1 border border-description rounded-lg w-full h-[40px] bg-white p-2;
+  }
+
+  .form-group {
+    @apply w-full;
   }
 }

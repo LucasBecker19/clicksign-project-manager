@@ -6,9 +6,11 @@ type ButtonProps = {
     action: () => void;
     variant?: "regular" | "outline";
     size?: "large" | "medium";
+    wfull?: boolean;
+    disabled?: boolean;
 };
 
-function Button({ icon: Icon, title, action, variant = "regular", size = "medium" }: ButtonProps) {
+function Button({ icon: Icon, title, action, variant = "regular", size = "medium", wfull = false, disabled = false }: ButtonProps) {
     const sizes = {
         large: "py-3.5 px-8 text-xl",
         medium: "py-2 px-6 text-base",
@@ -22,7 +24,8 @@ function Button({ icon: Icon, title, action, variant = "regular", size = "medium
     return (
         <button
             type="button"
-            className={`hover-zoom rounded-button flex items-center justify-center gap-4 ${sizes[size]} ${variants[variant]}`}
+            disabled={disabled}
+            className={`hover-zoom rounded-button flex items-center justify-center gap-4 ${sizes[size]} ${variants[variant]} ${wfull ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
             onClick={action}
         >
             {Icon}
