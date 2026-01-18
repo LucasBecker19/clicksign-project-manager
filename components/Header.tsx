@@ -12,7 +12,7 @@ export default function Header() {
     const searchRef = useCloseOnOutside<HTMLDivElement>(isSearchOpen, closeSearch);
 
     return (
-        <header className="bg-dark px-16 flex justify-between items-center shadow-header">
+        <header className="sticky top-0 z-40 bg-dark px-16 flex justify-between items-center shadow-header">
             <div></div>
 
             <Link href="/">
