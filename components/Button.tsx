@@ -1,22 +1,28 @@
 "use client";
 
 type ButtonProps = {
-    icon: React.ReactNode;
+    icon?: React.ReactNode;
     title: string;
     action: () => void;
-    variant: "large" | "medium";
+    variant?: "regular" | "outline";
+    size?: "large" | "medium";
 };
 
-function Button({ icon: Icon, title, action, variant }: ButtonProps) {
-    const variants = {
+function Button({ icon: Icon, title, action, variant = "regular", size = "medium" }: ButtonProps) {
+    const sizes = {
         large: "py-3.5 px-8 text-xl",
         medium: "py-2 px-6 text-base",
+    };
+
+    const variants = {
+        regular: "bg-accent text-white",
+        outline: "bg-transparent text-accent border border-accent",
     };
 
     return (
         <button
             type="button"
-            className={`hover-zoom bg-accent rounded-button flex items-center justify-center text-white gap-4 ${variants[variant]}`}
+            className={`hover-zoom rounded-button flex items-center justify-center gap-4 ${sizes[size]} ${variants[variant]}`}
             onClick={action}
         >
             {Icon}

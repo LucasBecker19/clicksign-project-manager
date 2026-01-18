@@ -4,10 +4,12 @@ import Image from "next/image";
 import { useCallback, useId, useState } from "react";
 
 import useCloseOnOutside from "@/hooks/useCloseOnOutside";
+import RemoveProjectModal from "./RemoveProjectModal";
 
 export default function ProjectCard() {
     const [isFavorite, setIsFavorite] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
     const closeMenu = useCallback(() => setIsMenuOpen(false), []);
     const menuRef = useCloseOnOutside<HTMLDivElement>(isMenuOpen, closeMenu);
     const menuId = useId();
@@ -60,7 +62,7 @@ export default function ProjectCard() {
                                         <span>Editar</span>
                                     </div>
                                 </button>
-                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent">
+                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent" onClick={() => setIsRemoveModalOpen(true)}>
                                     <div className="flex items-center gap-3">
                                         <Image src="/images/trash.svg" alt="" width={24} height={24} />
                                         <span>Remover</span>
@@ -90,6 +92,13 @@ export default function ProjectCard() {
                     </div>
                 </div>
             </div>
+            <RemoveProjectModal 
+                isOpen={isRemoveModalOpen} 
+                onClose={() => setIsRemoveModalOpen(false)} 
+                onConfirm={() => {
+                    setIsRemoveModalOpen(false);
+                }}
+            />
         </div>
     );
 }

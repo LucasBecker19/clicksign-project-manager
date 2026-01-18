@@ -12,7 +12,8 @@ const ProjectsEmptyState = (
             <p className="heading-2xl text-center align-middle">Nenhum projeto</p>
             <span className="text-description mb-2 font-normal text-base leading-22 text-center">Clique no botão abaixo para criar o primeiro e gerenciá-lo.</span>
             <Button 
-                variant="large"
+                variant="regular"
+                size="large"
                 icon={<Image src="/images/plus-circle.svg" alt="Plus Circle" width={24} height={24} />} 
                 title="Novo projeto" 
                 action={() => undefined} 
@@ -58,7 +59,8 @@ export default function Projects () {
                     </div>
 
                     <Button 
-                        variant="medium"
+                        variant="regular"
+                        size="medium"
                         icon={<Image src="/images/plus-circle.svg" alt="Plus Circle" width={24} height={24} />} 
                         title="Novo projeto" 
                         action={() => undefined} 
