@@ -22,6 +22,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body
         className={`${encodeSans.variable} font-sans antialiased`}
+        suppressHydrationWarning
       >
         {children}
       </body>
