@@ -2,35 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useState } from "react";
+
+import useCloseOnOutside from "@/hooks/useCloseOnOutside";
 
 export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const searchRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-                setIsSearchOpen(false);
-            }
-        };
-
-        const handleEscKey = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                setIsSearchOpen(false);
-            }
-        };
-
-        if (isSearchOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
-            document.addEventListener("keydown", handleEscKey);
-        }
-
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-            document.removeEventListener("keydown", handleEscKey);
-        };
-    }, [isSearchOpen]);
+    const closeSearch = useCallback(() => setIsSearchOpen(false), []);
+    const searchRef = useCloseOnOutside<HTMLDivElement>(isSearchOpen, closeSearch);
 
     return (
         <header className="bg-dark px-16 flex justify-between items-center shadow-header">
@@ -44,7 +23,7 @@ export default function Header() {
                 type="button" 
                 aria-label="Buscar" 
                 className="hover-zoom bg-transparent border-0 p-0"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                onClick={() => setIsSearchOpen((prevState) => !prevState)}
             >
                 <Image src="/images/search.svg" alt="" width={18} height={18} className="my-1" />
             </button>

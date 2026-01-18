@@ -1,19 +1,24 @@
 "use client";
 
 import Image from "next/image";
-import { useId, useState } from "react";
+import { useCallback, useId, useState } from "react";
+
+import useCloseOnOutside from "@/hooks/useCloseOnOutside";
 
 export default function ProjectCard() {
     const [isFavorite, setIsFavorite] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const closeMenu = useCallback(() => setIsMenuOpen(false), []);
+    const menuRef = useCloseOnOutside<HTMLDivElement>(isMenuOpen, closeMenu);
     const menuId = useId();
 
     const toggleFavorite = () => {
-        setIsFavorite(!isFavorite);
+        setIsFavorite((prevState) => !prevState);
     };
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+    const toggleMenu = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setIsMenuOpen((prevState) => !prevState);
     };
 
     return (
@@ -34,35 +39,37 @@ export default function ProjectCard() {
                         className="object-cover hover-zoom"
                     />
                 </button>
-                <button
-                    type="button"
-                    aria-expanded={isMenuOpen}
-                    aria-controls={menuId}
-                    aria-label={isMenuOpen ? "Fechar menu do card" : "Abrir menu do card"}
-                    className="absolute right-4 bottom-4 w-9 h-9 cursor-pointer bg-transparent p-0 border-0"
-                    onClick={toggleMenu}
-                >
-                    <Image src="/images/menu.svg" alt="" fill className="object-cover hover-zoom" />
-                </button>
-                {isMenuOpen && (
-                    <>
-                        <div className="absolute right-[26px] bottom-0 bg-white rounded-[2px] h-4 w-4 border-0 rotate-45"></div>
-                        <div id={menuId} className="absolute right-4 bottom-[-95px] bg-white rounded-lg min-w-[120px] z-10 overflow-hidden shadow-[0px_4px_4px_0px_#00000040]">
-                            <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent border-b border-line">
-                                <div className="flex items-center gap-3">
-                                    <Image src="/images/edit.svg" alt="" width={24} height={24} />
-                                    <span>Editar</span>
-                                </div>
-                            </button>
-                            <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent">
-                                <div className="flex items-center gap-3">
-                                    <Image src="/images/trash.svg" alt="" width={24} height={24} />
-                                    <span>Remover</span>
-                                </div>
-                            </button>
+                <div ref={menuRef}>
+                    <button
+                        type="button"
+                        aria-expanded={isMenuOpen}
+                        aria-controls={menuId}
+                        aria-label={isMenuOpen ? "Fechar menu do card" : "Abrir menu do card"}
+                        className="absolute right-4 bottom-4 w-9 h-9 cursor-pointer bg-transparent p-0 border-0"
+                        onClick={toggleMenu}
+                    >
+                        <Image src="/images/menu.svg" alt="" fill className="object-cover hover-zoom" />
+                    </button>
+                    {isMenuOpen && (
+                        <div id={menuId}>
+                            <div className="absolute right-[26px] bottom-0 bg-white rounded-[2px] h-4 w-4 border-0 rotate-45"></div>
+                            <div className="absolute right-4 bottom-[-95px] bg-white rounded-lg min-w-[120px] z-10 overflow-hidden shadow-[0px_4px_4px_0px_#00000040]">
+                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent border-b border-line">
+                                    <div className="flex items-center gap-3">
+                                        <Image src="/images/edit.svg" alt="" width={24} height={24} />
+                                        <span>Editar</span>
+                                    </div>
+                                </button>
+                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent">
+                                    <div className="flex items-center gap-3">
+                                        <Image src="/images/trash.svg" alt="" width={24} height={24} />
+                                        <span>Remover</span>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
-                    </>
-                )}
+                    )}
+                </div>
             </div>
             <div className="rounded-br-2xl rounded-bl-2xl flex flex-col gap-4 p-6 border border-[#DCDCDC] bg-white">
                 <div className="flex flex-col gap-3 border-b-1 border-line pb-4">
