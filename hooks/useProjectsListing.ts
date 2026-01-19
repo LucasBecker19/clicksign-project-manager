@@ -20,7 +20,7 @@ type UseProjectsListingResult = {
 
 const deriveSortOption = (by: SortOption, direction: SortDirection): SortOptionUI => {
   if (by === "name" && direction === "asc") return "alphabetical";
-  if (by === "startDate" && direction === "asc") return "recent";
+  if (by === "startDate" && direction === "desc") return "recent";
   if (by === "endDate" && direction === "asc") return "deadline";
   return "alphabetical";
 };
@@ -70,7 +70,7 @@ export function useProjectsListing(): UseProjectsListingResult {
           break;
         case "recent":
           setSortBy("startDate");
-          setSortDirection("asc");
+          setSortDirection("desc");
           break;
         case "deadline":
           setSortBy("endDate");
