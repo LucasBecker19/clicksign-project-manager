@@ -1,14 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useId, useState } from "react";
-import { useRouter } from "next/navigation";
 import { Project } from "@/types/project";
 
-import useCloseOnOutside from "@/hooks/useCloseOnOutside";
 import { useHighlightText } from "@/hooks/useHighlightText";
 import RemoveProjectModal from "./RemoveProjectModal";
-import useProjectStore from "@/store/projectStore";
+import { useProjectCardMenu } from "@/hooks/useProjectCardMenu";
 
 interface ProjectCardProps {
   project: Project;
@@ -16,35 +13,19 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, highlightQuery }: ProjectCardProps) {
-    const router = useRouter();
-    const toggleFavorite = useProjectStore((state) => state.toggleFavorite);
-    const deleteProject = useProjectStore((state) => state.deleteProject);
     const { renderHighlightedText } = useHighlightText();
-    
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
-    const closeMenu = useCallback(() => setIsMenuOpen(false), []);
-    const menuRef = useCloseOnOutside<HTMLDivElement>(isMenuOpen, closeMenu);
-    const menuId = useId();
-
-    const handleToggleFavorite = () => {
-        toggleFavorite(project.id);
-    };
-
-    const handleDeleteProject = () => {
-        deleteProject(project.id);
-        setIsRemoveModalOpen(false);
-    };
-
-    const handleEditProject = () => {
-        setIsMenuOpen(false);
-        router.push(`/projects/edit/${project.id}`);
-    };
-
-    const toggleMenu = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setIsMenuOpen((prevState) => !prevState);
-    };
+    const {
+        isMenuOpen,
+        isRemoveModalOpen,
+        menuRef,
+        menuId,
+        toggleMenu,
+        handleToggleFavorite,
+        handleEditProject,
+        handleDeleteProject,
+        openRemoveModal,
+        closeRemoveModal,
+    } = useProjectCardMenu(project);
 
     const formatDate = (dateString: string) => {
         const [year, month, day] = dateString.split('-');
@@ -102,8 +83,7 @@ export default function ProjectCard({ project, highlightQuery }: ProjectCardProp
                                     </div>
                                 </button>
                                 <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent" onClick={() => {
-                                    setIsMenuOpen(false);
-                                    setIsRemoveModalOpen(true);
+                                    openRemoveModal();
                                 }}>
                                     <div className="flex items-center gap-3">
                                         <Image src="/images/trash.svg" alt="" width={24} height={24} />
@@ -136,7 +116,7 @@ export default function ProjectCard({ project, highlightQuery }: ProjectCardProp
             </div>
             <RemoveProjectModal 
                 isOpen={isRemoveModalOpen} 
-                onClose={() => setIsRemoveModalOpen(false)} 
+                onClose={closeRemoveModal} 
                 onConfirm={handleDeleteProject}
                 projectName={project.name}
             />

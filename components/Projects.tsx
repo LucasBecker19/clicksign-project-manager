@@ -4,58 +4,28 @@ import BackButton from "./BackButton";
 import ProjectsEmpty from "./ProjectsEmpty";
 import ProjectsFilters from "./ProjectsFilters";
 import ProjectsGrid from "./ProjectsGrid";
-import useProjectStore, { SortDirection, SortOption } from "@/store/projectStore";
-import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useProjectsListing } from "@/hooks/useProjectsListing";
 
 export default function Projects () {
     const router = useRouter();
-    const projects = useProjectStore((state) => state.projects);
-    const filter = useProjectStore((state) => state.filter);
-    const sortBy = useProjectStore((state) => state.sortBy);
-    const sortDirection = useProjectStore((state) => state.sortDirection);
-    const searchQuery = useProjectStore((state) => state.searchQuery);
-    const setFilter = useProjectStore((state) => state.setFilter);
-    const setSortBy = useProjectStore((state) => state.setSortBy);
-    const setSortDirection = useProjectStore((state) => state.setSortDirection);
-    const setSearchQuery = useProjectStore((state) => state.setSearchQuery);
-    const getFilteredProjects = useProjectStore((state) => state.getFilteredProjects);
-
-    const [hasHydrated, setHasHydrated] = useState(false);
-
-    useEffect(() => {
-        if (useProjectStore.persist?.hasHydrated?.()) {
-            Promise.resolve().then(() => setHasHydrated(true));
-        }
-        const unsub = useProjectStore.persist?.onFinishHydration?.(() => setHasHydrated(true));
-        return () => unsub?.();
-    }, []);
-
-    useEffect(() => {
-        if (hasHydrated) {
-            setSortBy('name');
-            setSortDirection('asc');
-            setFilter('all');
-        }
-    }, [hasHydrated, setSortBy, setSortDirection, setFilter]);
-
-    const deriveSortOption = (by: SortOption, direction: SortDirection) => {
-        if (by === 'name' && direction === 'asc') return 'alphabetical';
-        if (by === 'startDate' && direction === 'asc') return 'recent';
-        if (by === 'endDate' && direction === 'asc') return 'deadline';
-        return 'alphabetical';
-    };
-
-    const sortOption = useMemo(() => deriveSortOption(sortBy, sortDirection), [sortBy, sortDirection]);
-
-    const filteredProjects = hasHydrated ? getFilteredProjects() : [];
-    const isSearchActive = searchQuery.length >= 3;
+    const {
+        projects,
+        filter,
+        sortOption,
+        isEmpty,
+        isSearchActive,
+        filteredProjects,
+        hasHydrated,
+        setFilter,
+        searchQuery,
+        setSearchQuery,
+        handleSortChange,
+    } = useProjectsListing();
 
     if (!hasHydrated) {
         return null;
     }
-
-    const isEmpty = projects.length === 0;
 
     if (isEmpty) {
         return <ProjectsEmpty onCreateProject={() => router.push('/projects/new')} />;
@@ -69,22 +39,7 @@ export default function Projects () {
                     filter={filter}
                     sortOption={sortOption}
                     onFilterChange={setFilter}
-                    onSortChange={(value) => {
-                        switch (value) {
-                            case 'alphabetical':
-                                setSortBy('name');
-                                setSortDirection('asc');
-                                break;
-                            case 'recent':
-                                setSortBy('startDate');
-                                setSortDirection('asc');
-                                break;
-                            case 'deadline':
-                                setSortBy('endDate');
-                                setSortDirection('asc');
-                                break;
-                        }
-                    }}
+                    onSortChange={handleSortChange}
                     onCreateProject={() => router.push('/projects/new')}
                 />
             ) : (
