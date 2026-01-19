@@ -33,6 +33,14 @@ export default function Projects () {
         return () => unsub?.();
     }, []);
 
+    useEffect(() => {
+        if (hasHydrated) {
+            setSortBy('name');
+            setSortDirection('asc');
+            setFilter('all');
+        }
+    }, [hasHydrated, setSortBy, setSortDirection, setFilter]);
+
     const deriveSortOption = (by: SortOption, direction: SortDirection) => {
         if (by === 'name' && direction === 'asc') return 'alphabetical';
         if (by === 'startDate' && direction === 'asc') return 'recent';
