@@ -7,9 +7,10 @@ type RemoveProjectModalProps = {
     isOpen: boolean;
     onClose: () => void;
     onConfirm: () => void;
+    projectName: string;
 };
 
-export default function RemoveProjectModal({ isOpen, onClose, onConfirm }: RemoveProjectModalProps) {
+export default function RemoveProjectModal({ isOpen, onClose, onConfirm, projectName }: RemoveProjectModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -22,7 +23,7 @@ export default function RemoveProjectModal({ isOpen, onClose, onConfirm }: Remov
                 <div className="border-t-1 border-line flex flex-col">
                     <div className="flex flex-col gap-3 my-8">
                         <span className="font-normal text-base leading-[22px] text-center text-description">Essa ação removerá definitivamente o projeto:</span>
-                        <span className="font-medium text-2xl leading-[32px] text-center text-dark">Nome do projeto</span>
+                        <span className="font-medium text-2xl leading-[32px] text-center text-dark">{projectName}</span>
                     </div>
                     <div className="flex m-auto justify-center items-center gap-8">
                         <Button title="Cancelar" action={onClose} variant="outline" size="large" />

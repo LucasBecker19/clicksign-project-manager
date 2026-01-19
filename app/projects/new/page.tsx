@@ -9,7 +9,7 @@ export default function NewProject() {
         <Header />
 
         <div className="py-[67px] px-[45px]">
-            <Link href="/" className="flex items-center gap-2 cursor-pointer mb-2">
+            <Link href="/" className="flex items-center gap-2 cursor-pointer mb-2 w-fit">
                 <Image src="/images/arrow-left.svg" alt="back button" width={16} height={16} />
                 <span className="align-middle text-accent">Voltar</span>
             </Link>

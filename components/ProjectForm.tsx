@@ -2,9 +2,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import DateInput from './DateInput';
 import Button from './Button';
 import ImageUpload from './ImageUpload';
+import useProjectStore from '@/store/projectStore';
 
 interface Errors {
   projectName?: string;
@@ -14,10 +16,14 @@ interface Errors {
 }
 
 export default function ProjectForm() {
+  const router = useRouter();
+  const addProject = useProjectStore((state) => state.addProject);
+  
   const [projectName, setProjectName] = useState('');
   const [client, setClient] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [coverImage, setCoverImage] = useState<File | null>(null);
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState({
     projectName: false,
@@ -102,7 +108,24 @@ export default function ProjectForm() {
 
   const handleSaveProject = () => {
     if (isFormValid()) {
-      console.log('Form is valid, saving project...');
+      const saveProject = (imageData?: string) => {
+        addProject({
+          name: projectName,
+          client: client,
+          startDate: startDate,
+          endDate: endDate,
+          coverImage: imageData
+        });
+        router.push('/');
+      };
+
+      if (coverImage) {
+        const reader = new FileReader();
+        reader.onloadend = () => saveProject(reader.result as string);
+        reader.readAsDataURL(coverImage);
+      } else {
+        saveProject();
+      }
     }
   };
 
@@ -194,7 +217,9 @@ export default function ProjectForm() {
                 <div className="flex gap-2 items-center">
                     <span className="form-title">Capa do projeto</span>
                 </div>
-                <ImageUpload />
+                <ImageUpload 
+                    onImageChange={setCoverImage}
+                />
             </div>
 
             <div className="form-group">
