@@ -2,14 +2,41 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import useCloseOnOutside from "@/hooks/useCloseOnOutside";
+import useProjectStore from "@/store/projectStore";
 
 export default function Header() {
     const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const closeSearch = useCallback(() => setIsSearchOpen(false), []);
+    const [searchInput, setSearchInput] = useState("");
+    const setSearchQuery = useProjectStore((state) => state.setSearchQuery);
+    const searchHistory = useProjectStore((state) => state.searchHistory);
+    const addToSearchHistory = useProjectStore((state) => state.addToSearchHistory);
+    const removeFromSearchHistory = useProjectStore((state) => state.removeFromSearchHistory);
+    
+    const closeSearch = useCallback(() => {
+        if (searchInput.length >= 3) {
+            addToSearchHistory(searchInput);
+        }
+        setIsSearchOpen(false);
+        setSearchInput("");
+        setSearchQuery("");
+    }, [searchInput, addToSearchHistory, setSearchQuery]);
+    
     const searchRef = useCloseOnOutside<HTMLDivElement>(isSearchOpen, closeSearch);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (searchInput.length >= 3) {
+                setSearchQuery(searchInput);
+            } else if (searchInput.length === 0) {
+                setSearchQuery("");
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [searchInput, setSearchQuery]);
 
     return (
         <header className="sticky top-0 z-40 bg-dark px-16 flex justify-between items-center shadow-header">
@@ -37,22 +64,41 @@ export default function Header() {
                             placeholder="Digite o nome do projeto..." 
                             className="flex-1 bg-transparent text-text placeholder-text-secondary outline-none"
                             autoFocus
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
                         />
                     </div>
 
-                    <div className="flex flex-col">
-                        {/** Não preciso componentizar, terá um forEach aqui */}
-                        <div className="border-t-1 border-line justify-between flex gap-20">
-                            <div className="flex items-center gap-4 py-[18px] px-6 cursor-pointer w-full">
-                                <Image src="/images/history.svg" alt="History icon" width={16} height={16} />
-                                <span className="font-normal text-base leading-4 text-description">Projeto 1</span>
-                            </div>
+                    {searchHistory.length > 0 && (
+                        <div className="flex flex-col">
+                            {searchHistory.map((historyItem, index) => (
+                                <div key={index} className="border-t-1 border-line justify-between flex gap-20">
+                                    <div 
+                                        className="flex items-center gap-4 py-[18px] px-6 cursor-pointer w-full"
+                                        onClick={() => {
+                                            setSearchInput(historyItem);
+                                            setSearchQuery(historyItem);
+                                        }}
+                                    >
+                                        <Image src="/images/history.svg" alt="History icon" width={16} height={16} />
+                                        <span className="font-normal text-base leading-4 text-description">{historyItem}</span>
+                                    </div>
 
-                            <div className="py-[18px] px-6">
-                                <Image src="/images/remove.svg" alt="Remove icon" className="hover-zoom" width={16} height={16} />
-                            </div>
+                                    <button
+                                        type="button"
+                                        className="py-[18px] px-6 bg-transparent border-0 cursor-pointer"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            removeFromSearchHistory(historyItem);
+                                        }}
+                                        aria-label="Remover busca do histórico"
+                                    >
+                                        <Image src="/images/remove.svg" alt="Remove icon" className="hover-zoom" width={16} height={16} />
+                                    </button>
+                                </div>
+                            ))}
                         </div>
-                    </div>
+                    )}
                 </div>
             )}
         </header>

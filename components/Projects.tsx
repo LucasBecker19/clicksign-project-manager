@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import Button from "./Button";
 import CustomSwitch from "./CustomSwitch";
 import { Select, MenuItem } from "@mui/material";
@@ -15,9 +16,11 @@ export default function Projects () {
     const filter = useProjectStore((state) => state.filter);
     const sortBy = useProjectStore((state) => state.sortBy);
     const sortDirection = useProjectStore((state) => state.sortDirection);
+    const searchQuery = useProjectStore((state) => state.searchQuery);
     const setFilter = useProjectStore((state) => state.setFilter);
     const setSortBy = useProjectStore((state) => state.setSortBy);
     const setSortDirection = useProjectStore((state) => state.setSortDirection);
+    const setSearchQuery = useProjectStore((state) => state.setSearchQuery);
     const getFilteredProjects = useProjectStore((state) => state.getFilteredProjects);
 
     const [hasHydrated, setHasHydrated] = useState(false);
@@ -40,6 +43,7 @@ export default function Projects () {
     const sortOption = useMemo(() => deriveSortOption(sortBy, sortDirection), [sortBy, sortDirection]);
 
     const filteredProjects = hasHydrated ? getFilteredProjects() : [];
+    const isSearchActive = searchQuery.length >= 3;
 
     if (!hasHydrated) {
         return null;
@@ -69,63 +73,74 @@ export default function Projects () {
 
     return (
         <div className="my-15 mx-card-x">
-            <div className="flex items-center justify-between mb-[22px]">
-                <div className="flex items-center gap-2">
-                    <p className="heading-2xl">Projetos</p>
-                    <span className="text-accent font-normal text-[17px] leading-none tracking-normal align-middle">({projects.length})</span>
-                </div>
-                <div className="flex items-center gap-8">
+            {!isSearchActive ? (
+                <div className="flex items-center justify-between mb-[22px]">
                     <div className="flex items-center gap-2">
-                        <CustomSwitch 
-                            checked={filter === 'favorites'}
-                            onChange={(_event, checked) => setFilter(checked ? 'favorites' : 'all')}
+                        <p className="heading-2xl">Projetos</p>
+                        <span className="text-accent font-normal text-[17px] leading-none tracking-normal align-middle">({projects.length})</span>
+                    </div>
+                    <div className="flex items-center gap-8">
+                        <div className="flex items-center gap-2">
+                            <CustomSwitch 
+                                checked={filter === 'favorites'}
+                                onChange={(_event, checked) => setFilter(checked ? 'favorites' : 'all')}
+                            />
+                            <span className="font-normal text-base leading-22 tracking-normal text-text-dark">Apenas Favoritos</span>
+                        </div>
+
+                        <div>
+                            <Select
+                                name="orderBy"
+                                id="orderBy"
+                                value={sortOption}
+                                onChange={(e) => {
+                                    const value = e.target.value as string;
+                                    
+                                    switch(value) {
+                                        case 'alphabetical':
+                                            setSortBy('name');
+                                            setSortDirection('asc');
+                                            break;
+                                        case 'recent':
+                                            setSortBy('startDate');
+                                            setSortDirection('asc');
+                                            break;
+                                        case 'deadline':
+                                            setSortBy('endDate');
+                                            setSortDirection('asc');
+                                            break;
+                                    }
+                                }}
+                                className="border border-accent bg-white w-[296px] h-10"
+                                sx={{
+                                    borderRadius: '8px',
+                                }}
+                            >
+                                <MenuItem sx={{ borderBottom: '1px solid #ECECEC'}} value="alphabetical">Ordem alfabética</MenuItem>
+                                <MenuItem sx={{ borderBottom: '1px solid #ECECEC'}} value="recent">Iniciados mais recentes</MenuItem>
+                                <MenuItem value="deadline">Prazo mais próximo</MenuItem>
+                            </Select>
+                        </div>
+
+                        <Button 
+                            variant="regular"
+                            size="medium"
+                            icon={<Image src="/images/plus-circle.svg" alt="Plus Circle" width={24} height={24} />} 
+                            title="Novo projeto" 
+                            action={() => router.push('/projects/new')} 
                         />
-                        <span className="font-normal text-base leading-22 tracking-normal text-text-dark">Apenas Favoritos</span>
                     </div>
-
-                    <div>
-                        <Select
-                            name="orderBy"
-                            id="orderBy"
-                            value={sortOption}
-                            onChange={(e) => {
-                                const value = e.target.value as string;
-                                
-                                switch(value) {
-                                    case 'alphabetical':
-                                        setSortBy('name');
-                                        setSortDirection('asc');
-                                        break;
-                                    case 'recent':
-                                        setSortBy('startDate');
-                                        setSortDirection('asc');
-                                        break;
-                                    case 'deadline':
-                                        setSortBy('endDate');
-                                        setSortDirection('asc');
-                                        break;
-                                }
-                            }}
-                            className="border border-accent bg-white w-[296px] h-10"
-                            sx={{
-                                borderRadius: '8px',
-                            }}
-                        >
-                            <MenuItem sx={{ borderBottom: '1px solid #ECECEC'}} value="alphabetical">Ordem alfabética</MenuItem>
-                            <MenuItem sx={{ borderBottom: '1px solid #ECECEC'}} value="recent">Iniciados mais recentes</MenuItem>
-                            <MenuItem value="deadline">Prazo mais próximo</MenuItem>
-                        </Select>
-                    </div>
-
-                    <Button 
-                        variant="regular"
-                        size="medium"
-                        icon={<Image src="/images/plus-circle.svg" alt="Plus Circle" width={24} height={24} />} 
-                        title="Novo projeto" 
-                        action={() => router.push('/projects/new')} 
-                    />
                 </div>
-            </div>
+            ) : (
+                <div className="mt-2">
+                    <Link href="/" onClick={() => setSearchQuery("")} className="flex items-center gap-2 cursor-pointer mb-2 w-fit">
+                        <Image src="/images/arrow-left.svg" alt="back button" width={16} height={16} />
+                        <span className="align-middle text-accent">Voltar</span>
+                    </Link>
+
+                    <p className="heading-2xl mb-8">Resultado da busca</p>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
                 {filteredProjects.map((project) => (

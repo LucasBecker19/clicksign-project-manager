@@ -12,6 +12,7 @@ interface ProjectState {
   sortDirection: SortDirection;
   filter: FilterOption;
   searchQuery: string;
+  searchHistory: string[];
   
   // Actions
   addProject: (project: CreateProjectInput) => void;
@@ -23,6 +24,8 @@ interface ProjectState {
   setSortDirection: (direction: SortDirection) => void;
   setFilter: (filter: FilterOption) => void;
   setSearchQuery: (query: string) => void;
+  addToSearchHistory: (query: string) => void;
+  removeFromSearchHistory: (query: string) => void;
   getFilteredProjects: () => Project[];
 }
 
@@ -34,6 +37,7 @@ const useProjectStore = create<ProjectState>()(
       sortDirection: 'asc',
       filter: 'all',
       searchQuery: '',
+      searchHistory: [],
 
       addProject: (projectInput: CreateProjectInput) => {
         const newProject: Project = {
@@ -96,6 +100,25 @@ const useProjectStore = create<ProjectState>()(
 
       setSearchQuery: (query: string) => {
         set({ searchQuery: query });
+      },
+
+      addToSearchHistory: (query: string) => {
+        const trimmedQuery = query.trim();
+        if (!trimmedQuery) return;
+
+        set((state) => {
+          const filteredHistory = state.searchHistory.filter(
+            (item) => item.toLowerCase() !== trimmedQuery.toLowerCase()
+          );
+          const newHistory = [trimmedQuery, ...filteredHistory].slice(0, 5);
+          return { searchHistory: newHistory };
+        });
+      },
+
+      removeFromSearchHistory: (query: string) => {
+        set((state) => ({
+          searchHistory: state.searchHistory.filter((item) => item !== query),
+        }));
       },
 
       getFilteredProjects: () => {
