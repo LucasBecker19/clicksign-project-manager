@@ -10,7 +10,6 @@ export default function Header() {
         setSearchInput,
         isSearchOpen,
         toggleSearch,
-        closeSearch,
         searchRef,
         filteredSearchHistory,
         removeFromSearchHistory,
