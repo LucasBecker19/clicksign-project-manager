@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import Button from "./Button";
 import CustomSwitch from "./CustomSwitch";
 import { Select, MenuItem } from "@mui/material";
 import ProjectCard from "./ProjectCard";
+import BackButton from "./BackButton";
 import useProjectStore, { SortDirection, SortOption } from "@/store/projectStore";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -141,10 +141,7 @@ export default function Projects () {
                 </div>
             ) : (
                 <div className="mt-2">
-                    <Link href="/" onClick={() => setSearchQuery("")} className="flex items-center gap-2 cursor-pointer mb-2 w-fit">
-                        <Image src="/images/arrow-left.svg" alt="back button" width={16} height={16} />
-                        <span className="align-middle text-accent">Voltar</span>
-                    </Link>
+                    <BackButton href="/" onClick={() => setSearchQuery("")} />
 
                     <p className="heading-2xl mb-8">Resultado da busca</p>
                 </div>
