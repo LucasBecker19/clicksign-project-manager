@@ -18,6 +18,7 @@ interface ProjectState {
   updateProject: (project: UpdateProjectInput) => void;
   deleteProject: (id: string) => void;
   toggleFavorite: (id: string) => void;
+  getProjectById: (id: string) => Project | undefined;
   setSortBy: (sortBy: SortOption) => void;
   setSortDirection: (direction: SortDirection) => void;
   setFilter: (filter: FilterOption) => void;
@@ -75,6 +76,10 @@ const useProjectStore = create<ProjectState>()(
               : project
           ),
         }));
+      },
+
+      getProjectById: (id: string) => {
+        return get().projects.find((project) => project.id === id);
       },
 
       setSortBy: (sortBy: SortOption) => {

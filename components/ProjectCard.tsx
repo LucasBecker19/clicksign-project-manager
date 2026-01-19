@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useId, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Project } from "@/types/project";
 
 import useCloseOnOutside from "@/hooks/useCloseOnOutside";
@@ -13,6 +14,7 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
+    const router = useRouter();
     const toggleFavorite = useProjectStore((state) => state.toggleFavorite);
     const deleteProject = useProjectStore((state) => state.deleteProject);
     
@@ -31,13 +33,19 @@ export default function ProjectCard({ project }: ProjectCardProps) {
         setIsRemoveModalOpen(false);
     };
 
+    const handleEditProject = () => {
+        setIsMenuOpen(false);
+        router.push(`/projects/edit/${project.id}`);
+    };
+
     const toggleMenu = (e: React.MouseEvent) => {
         e.stopPropagation();
         setIsMenuOpen((prevState) => !prevState);
     };
 
     const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
+        const [year, month, day] = dateString.split('-');
+        const date = new Date(Number(year), Number(month) - 1, Number(day));
         return date.toLocaleDateString('pt-BR', { 
             year: 'numeric', 
             month: 'long', 
@@ -84,7 +92,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                         <div id={menuId}>
                             <div className="absolute right-[26px] bottom-0 bg-white rounded-[2px] h-4 w-4 border-0 rotate-45"></div>
                             <div className="absolute right-4 bottom-[-95px] bg-white rounded-lg min-w-[120px] z-10 overflow-hidden shadow-[0px_4px_4px_0px_#00000040]">
-                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent border-b border-line">
+                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent border-b border-line" onClick={handleEditProject}>
                                     <div className="flex items-center gap-3">
                                         <Image src="/images/edit.svg" alt="" width={24} height={24} />
                                         <span>Editar</span>

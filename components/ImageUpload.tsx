@@ -6,10 +6,11 @@ import Button from './Button';
 
 type ImageUploadProps = {
   onImageChange?: (file: File | null) => void;
+  initialImage?: string;
 };
 
-export default function ImageUpload({ onImageChange }: ImageUploadProps) {
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+export default function ImageUpload({ onImageChange, initialImage }: ImageUploadProps) {
+  const [imagePreview, setImagePreview] = useState<string | null>(initialImage || null);
   const [isDragging, setIsDragging] = useState(false);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {

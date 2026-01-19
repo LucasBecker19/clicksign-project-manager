@@ -7,6 +7,7 @@ import DateInput from './DateInput';
 import Button from './Button';
 import ImageUpload from './ImageUpload';
 import useProjectStore from '@/store/projectStore';
+import { Project } from '@/types/project';
 
 interface Errors {
   projectName?: string;
@@ -15,15 +16,22 @@ interface Errors {
   endDate?: string;
 }
 
-export default function ProjectForm() {
+interface ProjectFormProps {
+  initialProject?: Project;
+  isEditMode?: boolean;
+}
+
+export default function ProjectForm({ initialProject, isEditMode = false }: ProjectFormProps) {
   const router = useRouter();
   const addProject = useProjectStore((state) => state.addProject);
+  const updateProject = useProjectStore((state) => state.updateProject);
   
-  const [projectName, setProjectName] = useState('');
-  const [client, setClient] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [projectName, setProjectName] = useState(initialProject?.name || '');
+  const [client, setClient] = useState(initialProject?.client || '');
+  const [startDate, setStartDate] = useState(initialProject?.startDate || '');
+  const [endDate, setEndDate] = useState(initialProject?.endDate || '');
   const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [imageRemoved, setImageRemoved] = useState(false);
   const [errors, setErrors] = useState<Errors>({});
   const [touched, setTouched] = useState({
     projectName: false,
@@ -109,13 +117,24 @@ export default function ProjectForm() {
   const handleSaveProject = () => {
     if (isFormValid()) {
       const saveProject = (imageData?: string) => {
-        addProject({
-          name: projectName,
-          client: client,
-          startDate: startDate,
-          endDate: endDate,
-          coverImage: imageData
-        });
+        if (isEditMode && initialProject) {
+          updateProject({
+            id: initialProject.id,
+            name: projectName,
+            client: client,
+            startDate: startDate,
+            endDate: endDate,
+            coverImage: imageRemoved ? undefined : (imageData || initialProject.coverImage)
+          });
+        } else {
+          addProject({
+            name: projectName,
+            client: client,
+            startDate: startDate,
+            endDate: endDate,
+            coverImage: imageData
+          });
+        }
         router.push('/');
       };
 
@@ -218,7 +237,15 @@ export default function ProjectForm() {
                     <span className="form-title">Capa do projeto</span>
                 </div>
                 <ImageUpload 
-                    onImageChange={setCoverImage}
+                    onImageChange={(file) => {
+                        setCoverImage(file);
+                        if (file === null) {
+                            setImageRemoved(true);
+                        } else {
+                            setImageRemoved(false);
+                        }
+                    }}
+                    initialImage={initialProject?.coverImage}
                 />
             </div>
 
