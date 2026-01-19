@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useProjectStore, { FilterOption, SortDirection, SortOption } from "@/store/projectStore";
 import { Project } from "@/types/project";
-
-export type SortOptionUI = "alphabetical" | "recent" | "deadline";
+import { SORT_CONFIG, SortOptionUI } from "@/utils/constants";
 
 type UseProjectsListingResult = {
   projects: Project[];
@@ -19,10 +18,11 @@ type UseProjectsListingResult = {
 };
 
 const deriveSortOption = (by: SortOption, direction: SortDirection): SortOptionUI => {
-  if (by === "name" && direction === "asc") return "alphabetical";
-  if (by === "startDate" && direction === "desc") return "recent";
-  if (by === "endDate" && direction === "asc") return "deadline";
-  return "alphabetical";
+  return (
+    Object.entries(SORT_CONFIG).find(
+      ([, config]) => config.sortBy === by && config.sortDirection === direction
+    )?.[0] as SortOptionUI
+  ) ?? "alphabetical";
 };
 
 export function useProjectsListing(): UseProjectsListingResult {
@@ -42,18 +42,11 @@ export function useProjectsListing(): UseProjectsListingResult {
   useEffect(() => {
     if (useProjectStore.persist?.hasHydrated?.()) {
       Promise.resolve().then(() => setHasHydrated(true));
+      return;
     }
     const unsub = useProjectStore.persist?.onFinishHydration?.(() => setHasHydrated(true));
     return () => unsub?.();
   }, []);
-
-  useEffect(() => {
-    if (hasHydrated) {
-      setSortBy("name");
-      setSortDirection("asc");
-      setFilter("all");
-    }
-  }, [hasHydrated, setSortBy, setSortDirection, setFilter]);
 
   const sortOption = useMemo(() => deriveSortOption(sortBy, sortDirection), [sortBy, sortDirection]);
 
@@ -63,20 +56,9 @@ export function useProjectsListing(): UseProjectsListingResult {
 
   const handleSortChange = useCallback(
     (value: SortOptionUI) => {
-      switch (value) {
-        case "alphabetical":
-          setSortBy("name");
-          setSortDirection("asc");
-          break;
-        case "recent":
-          setSortBy("startDate");
-          setSortDirection("desc");
-          break;
-        case "deadline":
-          setSortBy("endDate");
-          setSortDirection("asc");
-          break;
-      }
+      const config = SORT_CONFIG[value];
+      setSortBy(config.sortBy);
+      setSortDirection(config.sortDirection);
     },
     [setSortBy, setSortDirection]
   );

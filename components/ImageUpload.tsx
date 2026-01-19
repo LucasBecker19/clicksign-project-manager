@@ -106,7 +106,7 @@ export default function ImageUpload({ onImageChange, initialImage }: ImageUpload
               variant="outline"
               size="medium"
               title="Selecionar"
-              action={handleSelectClick}
+              onClick={handleSelectClick}
             />
           </div>
         </div>

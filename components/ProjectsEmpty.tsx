@@ -20,7 +20,7 @@ export default function ProjectsEmpty({ onCreateProject }: ProjectsEmptyProps) {
           size="large"
           icon={<Image src="/images/plus-circle.svg" alt="Plus Circle" width={24} height={24} />}
           title="Novo projeto"
-          action={onCreateProject}
+          onClick={onCreateProject}
         />
       </div>
     </div>

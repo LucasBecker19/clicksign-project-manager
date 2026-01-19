@@ -9,6 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import DateInput from './DateInput';
 import Button from './Button';
 import ImageUpload from './ImageUpload';
+import FormField from './FormField';
 import useProjectStore from '@/store/projectStore';
 import { Project } from '@/types/project';
 import { readFileAsDataURL } from '@/utils/file';
@@ -97,61 +98,31 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
   return (
     <div className="border border-line-darker rounded-lg">
       <form className="w-[700px] m-auto py-[52px] gap-8 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-        <div className="form-group">
-          <div className="flex gap-2 items-center">
-            <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.name ? 'text-[var(--color-error)]' : 'text-accent'}`}>
-              Nome do projeto
-            </span>
-            <span
-              className="form-required-label"
-              style={errors.name ? { color: 'var(--color-error)' } : undefined}
-            >
-              (Obrigatório)
-            </span>
-          </div>
-
+        <FormField label="Nome do projeto" error={errors.name} required>
           <input
             id="name"
             type="text"
             {...register('name')}
-            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${errors.name ? 'border-[var(--color-error-strong)]' : 'border-description'}`}
+            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${
+              errors.name ? 'border-[var(--color-error-strong)]' : 'border-description'
+            }`}
             autoComplete="off"
             required
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-[var(--color-error-strong)] font-normal leading-[22px]">
-              {errors.name.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
-        <div className="form-group">
-          <div className="flex gap-2 items-center">
-            <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.client ? 'text-[var(--color-error)]' : 'text-accent'}`}>
-              Cliente
-            </span>
-            <span
-              className="form-required-label"
-              style={errors.client ? { color: 'var(--color-error)' } : undefined}
-            >
-              (Obrigatório)
-            </span>
-          </div>
-
+        <FormField label="Cliente" error={errors.client} required>
           <input
             id="client"
             type="text"
             {...register('client')}
-            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${errors.client ? 'border-[var(--color-error-strong)]' : 'border-description'}`}
+            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${
+              errors.client ? 'border-[var(--color-error-strong)]' : 'border-description'
+            }`}
             autoComplete="off"
             required
           />
-          {errors.client && (
-            <p className="mt-1 text-sm text-[var(--color-error-strong)] font-normal leading-[22px]">
-              {errors.client.message}
-            </p>
-          )}
-        </div>
+        </FormField>
 
         <div className="flex items-center gap-10">
           <Controller

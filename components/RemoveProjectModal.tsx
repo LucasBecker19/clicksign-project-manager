@@ -26,8 +26,8 @@ export default function RemoveProjectModal({ isOpen, onClose, onConfirm, project
                         <span className="font-medium text-2xl leading-[32px] text-center text-dark">{projectName}</span>
                     </div>
                     <div className="flex m-auto justify-center items-center gap-8">
-                        <Button title="Cancelar" action={onClose} variant="outline" size="large" width="226px" />
-                        <Button title="Confirmar" action={onConfirm} variant="regular" size="large" width="260px" />
+                        <Button title="Cancelar" onClick={onClose} variant="outline" size="large" width="226px" />
+                        <Button title="Confirmar" onClick={onConfirm} variant="regular" size="large" width="260px" />
                     </div>
                 </div>
             </div>

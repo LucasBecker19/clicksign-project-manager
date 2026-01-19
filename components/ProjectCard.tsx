@@ -5,7 +5,9 @@ import { Project } from "@/types/project";
 
 import { useHighlightText } from "@/hooks/useHighlightText";
 import RemoveProjectModal from "./RemoveProjectModal";
+import ProjectCardMenu from "./ProjectCardMenu";
 import { useProjectCardMenu } from "@/hooks/useProjectCardMenu";
+import { formatDate } from "@/utils/date";
 
 interface ProjectCardProps {
   project: Project;
@@ -26,16 +28,6 @@ export default function ProjectCard({ project, highlightQuery }: ProjectCardProp
         openRemoveModal,
         closeRemoveModal,
     } = useProjectCardMenu(project);
-
-    const formatDate = (dateString: string) => {
-        const [year, month, day] = dateString.split('-');
-        const date = new Date(Number(year), Number(month) - 1, Number(day));
-        return date.toLocaleDateString('pt-BR', { 
-            year: 'numeric', 
-            month: 'long', 
-            day: '2-digit' 
-        });
-    };
 
     return (
         <div className="flex flex-col w-fit">
@@ -62,37 +54,14 @@ export default function ProjectCard({ project, highlightQuery }: ProjectCardProp
                     />
                 </button>
                 <div ref={menuRef}>
-                    <button
-                        type="button"
-                        aria-expanded={isMenuOpen}
-                        aria-controls={menuId}
-                        aria-label={isMenuOpen ? "Fechar menu do card" : "Abrir menu do card"}
-                        className="absolute right-4 bottom-4 w-9 h-9 cursor-pointer bg-transparent p-0 border-0"
-                        onClick={toggleMenu}
-                    >
-                        <Image src="/images/menu.svg" alt="" fill className="object-cover hover-zoom" />
-                    </button>
-                    {isMenuOpen && (
-                        <div id={menuId}>
-                            <div className="absolute right-[26px] bottom-0 bg-white rounded-[2px] h-4 w-4 border-0 rotate-45"></div>
-                            <div className="absolute right-4 bottom-[-95px] bg-white rounded-lg min-w-[120px] z-10 overflow-hidden shadow-[var(--shadow-strong)]">
-                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent border-b border-line" onClick={handleEditProject}>
-                                    <div className="flex items-center gap-3">
-                                        <Image src="/images/edit.svg" alt="" width={24} height={24} />
-                                        <span>Editar</span>
-                                    </div>
-                                </button>
-                                <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent" onClick={() => {
-                                    openRemoveModal();
-                                }}>
-                                    <div className="flex items-center gap-3">
-                                        <Image src="/images/trash.svg" alt="" width={24} height={24} />
-                                        <span>Remover</span>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    )}
+                    <ProjectCardMenu
+                        isOpen={isMenuOpen}
+                        menuRef={menuRef}
+                        menuId={menuId}
+                        onToggle={toggleMenu}
+                        onEdit={handleEditProject}
+                        onDelete={() => openRemoveModal()}
+                    />
                 </div>
             </div>
             <div className="rounded-br-2xl rounded-bl-2xl flex flex-col gap-4 p-6 border border-[var(--color-border-strong)] bg-white">

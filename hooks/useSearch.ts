@@ -3,9 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import useCloseOnOutside from "./useCloseOnOutside";
 import useProjectStore from "@/store/projectStore";
-
-const DEBOUNCE_MS = 300;
-const MIN_SEARCH_LENGTH = 3;
+import { SEARCH } from "@/utils/constants";
 
 export function useSearch() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -16,7 +14,7 @@ export function useSearch() {
   const removeFromSearchHistory = useProjectStore((state) => state.removeFromSearchHistory);
 
   const closeSearch = useCallback(() => {
-    if (searchInput.length >= MIN_SEARCH_LENGTH) {
+    if (searchInput.length >= SEARCH.MIN_LENGTH) {
       addToSearchHistory(searchInput);
     }
     setIsSearchOpen(false);
@@ -26,12 +24,12 @@ export function useSearch() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (searchInput.length >= MIN_SEARCH_LENGTH) {
+      if (searchInput.length >= SEARCH.MIN_LENGTH) {
         setSearchQuery(searchInput);
       } else if (searchInput.length === 0) {
         setSearchQuery("");
       }
-    }, DEBOUNCE_MS);
+    }, SEARCH.DEBOUNCE_MS);
 
     return () => clearTimeout(timer);
   }, [searchInput, setSearchQuery]);

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Project, CreateProjectInput, UpdateProjectInput } from '@/types/project';
+import { SEARCH } from '@/utils/constants';
 
 export type SortOption = 'name' | 'startDate' | 'endDate';
 export type SortDirection = 'asc' | 'desc';
@@ -110,7 +111,7 @@ const useProjectStore = create<ProjectState>()(
           const filteredHistory = state.searchHistory.filter(
             (item) => item.toLowerCase() !== trimmedQuery.toLowerCase()
           );
-          const newHistory = [trimmedQuery, ...filteredHistory].slice(0, 5);
+          const newHistory = [trimmedQuery, ...filteredHistory].slice(0, SEARCH.MAX_HISTORY);
           return { searchHistory: newHistory };
         });
       },

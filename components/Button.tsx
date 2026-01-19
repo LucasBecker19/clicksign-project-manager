@@ -3,7 +3,7 @@
 type ButtonProps = {
     icon?: React.ReactNode;
     title: string;
-    action?: () => void;
+    onClick?: () => void;
     type?: "button" | "submit" | "reset";
     variant?: "regular" | "outline";
     size?: "large" | "medium";
@@ -12,7 +12,7 @@ type ButtonProps = {
     disabled?: boolean;
 };
 
-function Button({ icon: Icon, title, action = () => {}, type = "button", variant = "regular", size = "medium", wfull = false, width, disabled = false }: ButtonProps) {
+function Button({ icon: Icon, title, onClick, type = "button", variant = "regular", size = "medium", wfull = false, width, disabled = false }: ButtonProps) {
     const sizes = {
         large: "py-3.5 px-8 text-xl",
         medium: "py-2 px-6 text-base",
@@ -29,7 +29,7 @@ function Button({ icon: Icon, title, action = () => {}, type = "button", variant
             disabled={disabled}
             className={`rounded-button flex items-center justify-center gap-4 ${sizes[size]} ${variants[variant]} ${wfull ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover-zoom'}`}
             style={width ? { width } : undefined}
-            onClick={action}
+            onClick={onClick}
         >
             {Icon}
             <span className="font-sans font-normal leading-22 tracking-normal text-center align-bottom">

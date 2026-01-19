@@ -63,7 +63,7 @@ export default function ProjectsFilters({
           size="medium"
           icon={<Image src="/images/plus-circle.svg" alt="Plus Circle" width={24} height={24} />}
           title="Novo projeto"
-          action={onCreateProject}
+          onClick={onCreateProject}
         />
       </div>
     </div>
