@@ -45,7 +45,12 @@ export default function DateInput({
           {label}
         </span>
         {required && (
-          <span className={`form-required-label ${hasError ? 'text-[var(--color-error)]' : ''}`}>(Obrigatório)</span>
+            <span
+              className="form-required-label"
+              style={hasError ? { color: 'var(--color-error)' } : undefined}
+            >
+              (Obrigatório)
+            </span>
         )}
       </div>
 
@@ -56,9 +61,8 @@ export default function DateInput({
           value={value}
           onChange={handleChange}
           onBlur={onBlur}
-          className={`form-input pr-10 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 ${!value ? '[&::-webkit-datetime-edit-text]:opacity-0 [&::-webkit-datetime-edit-month-field]:opacity-0 [&::-webkit-datetime-edit-day-field]:opacity-0 [&::-webkit-datetime-edit-year-field]:opacity-0' : ''} ${
-            hasError ? 'border-[var(--color-error-strong)] !border-2' : ''
-          }`}
+          className={`form-input pr-10 [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 ${!value ? '[&::-webkit-datetime-edit-text]:opacity-0 [&::-webkit-datetime-edit-month-field]:opacity-0 [&::-webkit-datetime-edit-day-field]:opacity-0 [&::-webkit-datetime-edit-year-field]:opacity-0' : ''}`}
+          style={{ border: hasError ? '1px solid var(--color-error-strong)' : undefined }}
           autoComplete="off"
           required={required}
         />

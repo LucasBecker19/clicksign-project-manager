@@ -102,7 +102,12 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
             <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.name ? 'text-[var(--color-error)]' : 'text-accent'}`}>
               Nome do projeto
             </span>
-            <span className={`form-required-label ${errors.name ? 'text-[var(--color-error)]' : ''}`}>(Obrigatório)</span>
+            <span
+              className="form-required-label"
+              style={errors.name ? { color: 'var(--color-error)' } : undefined}
+            >
+              (Obrigatório)
+            </span>
           </div>
 
           <input
@@ -125,7 +130,12 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
             <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.client ? 'text-[var(--color-error)]' : 'text-accent'}`}>
               Cliente
             </span>
-            <span className={`form-required-label ${errors.client ? 'text-[var(--color-error)]' : ''}`}>(Obrigatório)</span>
+            <span
+              className="form-required-label"
+              style={errors.client ? { color: 'var(--color-error)' } : undefined}
+            >
+              (Obrigatório)
+            </span>
           </div>
 
           <input
@@ -151,7 +161,7 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
               <DateInput
                 id="start-date"
                 label="Data de Início"
-                iconSrc="/images/calendar-day-light.svg"
+                iconSrc={errors.startDate ? "/images/red-calendar-day-light.svg" : "/images/calendar-day-light.svg"}
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
@@ -168,7 +178,7 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
               <DateInput
                 id="end-date"
                 label="Data Final"
-                iconSrc="/images/calendar-check-light.svg"
+                iconSrc={errors.endDate ? "/images/red-calendar-check-light.svg" : "/images/calendar-check-light.svg"}
                 value={field.value}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
