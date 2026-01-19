@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { Select, MenuItem } from "@mui/material";
 import Button from "./Button";
 import CustomSwitch from "./CustomSwitch";
+import Select from "./Select";
 
 interface ProjectsFiltersProps {
   totalCount: number;
@@ -39,23 +39,15 @@ export default function ProjectsFilters({
 
         <div className="w-full md:w-auto">
           <Select
-            name="orderBy"
-            id="orderBy"
             value={sortOption}
-            onChange={(e) => onSortChange(e.target.value as ProjectsFiltersProps["sortOption"])}
-            className="border border-accent bg-white lg:w-[296px] h-10"
-            sx={{
-              borderRadius: "8px",
-            }}
-          >
-            <MenuItem sx={{ borderBottom: "1px solid var(--color-border)" }} value="alphabetical">
-              Ordem alfabética
-            </MenuItem>
-            <MenuItem sx={{ borderBottom: "1px solid var(--color-border)" }} value="recent">
-              Iniciados mais recentes
-            </MenuItem>
-            <MenuItem value="deadline">Prazo mais próximo</MenuItem>
-          </Select>
+            onChange={(value) => onSortChange(value as ProjectsFiltersProps["sortOption"])}
+            options={[
+              { value: "alphabetical", label: "Ordem alfabética" },
+              { value: "recent", label: "Iniciados mais recentes" },
+              { value: "deadline", label: "Prazo mais próximo" },
+            ]}
+            className="lg:w-[296px]"
+          />
         </div>
 
         <Button

@@ -6,7 +6,7 @@
   --color-text-strong: #1C1930;
   --shadow-header: 0px 4px 4px 0px #00000040;
   --color-heading: #1F1283;
-  --color-text-muted: #717171;
+  --color-gray-600: #717171;
   --color-primary: #695CCD;
   --color-text: #1E1E1E;
   --color-border: #ECECEC;
@@ -20,6 +20,7 @@
   /* Legacy aliases kept for current utility classes */
   --color-accent: var(--color-primary);
   --color-title: var(--color-heading);
+  --color-text-muted: var(--color-gray-600);
   --color-description: var(--color-text-muted);
   --color-dark: var(--color-text-strong);
   --color-text-dark: var(--color-text);
@@ -38,7 +39,7 @@
   --color-text-strong: var(--color-text-strong);
   --shadow-header: var(--shadow-header);
   --color-heading: var(--color-heading);
-  --color-text-muted: var(--color-text-muted);
+  --color-gray-600: var(--color-gray-600);
   --color-primary: var(--color-primary);
   --color-text: var(--color-text);
   --color-border: var(--color-border);
@@ -52,6 +53,7 @@
   /* Legacy aliases kept for current utility classes */
   --color-accent: var(--color-primary);
   --color-title: var(--color-heading);
+  --color-text-muted: var(--color-gray-600);
   --color-description: var(--color-text-muted);
   --color-dark: var(--color-text-strong);
   --color-text-dark: var(--color-text);

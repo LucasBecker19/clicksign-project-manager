@@ -158,6 +158,12 @@ const useProjectStore = create<ProjectState>()(
     }),
     {
       name: 'project-storage',
+      partialize: (state) => ({
+        projects: state.projects,
+        filter: state.filter,
+        searchQuery: state.searchQuery,
+        searchHistory: state.searchHistory,
+      }),
     }
   )
 );
