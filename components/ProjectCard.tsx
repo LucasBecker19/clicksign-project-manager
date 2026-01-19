@@ -6,17 +6,20 @@ import { useRouter } from "next/navigation";
 import { Project } from "@/types/project";
 
 import useCloseOnOutside from "@/hooks/useCloseOnOutside";
+import { useHighlightText } from "@/hooks/useHighlightText";
 import RemoveProjectModal from "./RemoveProjectModal";
 import useProjectStore from "@/store/projectStore";
 
 interface ProjectCardProps {
   project: Project;
+  highlightQuery?: string;
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project, highlightQuery }: ProjectCardProps) {
     const router = useRouter();
     const toggleFavorite = useProjectStore((state) => state.toggleFavorite);
     const deleteProject = useProjectStore((state) => state.deleteProject);
+    const { renderHighlightedText } = useHighlightText();
     
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isRemoveModalOpen, setIsRemoveModalOpen] = useState(false);
@@ -114,7 +117,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
             </div>
             <div className="rounded-br-2xl rounded-bl-2xl flex flex-col gap-4 p-6 border border-[#DCDCDC] bg-white">
                 <div className="flex flex-col gap-3 border-b-1 border-line pb-4">
-                    <p className="font-bold text-xl leading-none text-title">{project.name}</p>
+                    <p className="font-bold text-xl leading-none text-title">{renderHighlightedText(project.name, highlightQuery)}</p>
                     <div className="flex items-center">
                         <span className="mr-2 font-bold text-base leading-none text-description">Cliente:</span>
                         <span className="font-normal text-base leading-none text-description">{project.client}</span>

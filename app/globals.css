@@ -11,6 +11,7 @@
   --text-dark: #1E1E1E;
   --line: #ECECEC;
   --line-darker: #DCDCDC;
+  --highlight: #FFB23D;
 }
 
 @theme inline {
@@ -24,6 +25,7 @@
   --color-text-dark: var(--text-dark);
   --color-line: var(--line);
   --color-line-darker: var(--line-darker);
+  --color-highlight: var(--highlight);
   --font-sans: var(--font-encode-sans), ui-sans-serif, system-ui, sans-serif;
   /* Custom design tokens */
   --radius-button: 26px;
