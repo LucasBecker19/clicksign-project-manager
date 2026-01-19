@@ -2,43 +2,20 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-
-import useCloseOnOutside from "@/hooks/useCloseOnOutside";
-import useProjectStore from "@/store/projectStore";
+import { useSearch } from "@/hooks/useSearch";
 
 export default function Header() {
-    const [isSearchOpen, setIsSearchOpen] = useState(false);
-    const [searchInput, setSearchInput] = useState("");
-    const setSearchQuery = useProjectStore((state) => state.setSearchQuery);
-    const searchHistory = useProjectStore((state) => state.searchHistory);
-    const addToSearchHistory = useProjectStore((state) => state.addToSearchHistory);
-    const removeFromSearchHistory = useProjectStore((state) => state.removeFromSearchHistory);
-    
-    const closeSearch = useCallback(() => {
-        if (searchInput.length >= 3) {
-            addToSearchHistory(searchInput);
-        }
-        setIsSearchOpen(false);
-    }, [searchInput, addToSearchHistory]);
-    
-    const searchRef = useCloseOnOutside<HTMLDivElement>(isSearchOpen, closeSearch);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (searchInput.length >= 3) {
-                setSearchQuery(searchInput);
-            } else if (searchInput.length === 0) {
-                setSearchQuery("");
-            }
-        }, 300);
-
-        return () => clearTimeout(timer);
-    }, [searchInput, setSearchQuery]);
-
-    const filteredSearchHistory = searchHistory.filter((item) =>
-        item.toLowerCase().includes(searchInput.toLowerCase())
-    );
+    const {
+        searchInput,
+        setSearchInput,
+        isSearchOpen,
+        toggleSearch,
+        closeSearch,
+        searchRef,
+        filteredSearchHistory,
+        removeFromSearchHistory,
+        setSearchQuery,
+    } = useSearch();
 
     return (
         <header className="sticky top-0 z-40 bg-dark px-16 flex justify-between items-center shadow-header">
@@ -52,7 +29,7 @@ export default function Header() {
                 type="button" 
                 aria-label="Buscar" 
                 className="hover-zoom bg-transparent border-0 p-0"
-                onClick={() => setIsSearchOpen((prevState) => !prevState)}
+                onClick={toggleSearch}
             >
                 <Image src="/images/search.svg" alt="" width={18} height={18} className="my-1" />
             </button>
