@@ -20,9 +20,7 @@ export default function Header() {
             addToSearchHistory(searchInput);
         }
         setIsSearchOpen(false);
-        setSearchInput("");
-        setSearchQuery("");
-    }, [searchInput, addToSearchHistory, setSearchQuery]);
+    }, [searchInput, addToSearchHistory]);
     
     const searchRef = useCloseOnOutside<HTMLDivElement>(isSearchOpen, closeSearch);
 
@@ -37,6 +35,10 @@ export default function Header() {
 
         return () => clearTimeout(timer);
     }, [searchInput, setSearchQuery]);
+
+    const filteredSearchHistory = searchHistory.filter((item) =>
+        item.toLowerCase().includes(searchInput.toLowerCase())
+    );
 
     return (
         <header className="sticky top-0 z-40 bg-dark px-16 flex justify-between items-center shadow-header">
@@ -69,9 +71,9 @@ export default function Header() {
                         />
                     </div>
 
-                    {searchHistory.length > 0 && (
+                    {filteredSearchHistory.length > 0 && (
                         <div className="flex flex-col">
-                            {searchHistory.map((historyItem, index) => (
+                            {filteredSearchHistory.map((historyItem, index) => (
                                 <div key={index} className="border-t-1 border-line justify-between flex gap-20">
                                     <div 
                                         className="flex items-center gap-4 py-[18px] px-6 cursor-pointer w-full"
