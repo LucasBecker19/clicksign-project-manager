@@ -32,7 +32,7 @@ export default function Projects () {
     }
 
     return (
-        <div className="my-15 mx-card-x">
+        <div className="my-15 mx-[38px]">
             {!isSearchActive ? (
                 <ProjectsFilters
                     totalCount={projects.length}

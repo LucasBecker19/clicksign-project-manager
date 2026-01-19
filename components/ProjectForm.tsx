@@ -96,8 +96,8 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
   };
 
   return (
-    <div className="border border-line-darker rounded-lg">
-      <form className="w-[700px] m-auto py-[52px] gap-8 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+    <div className="border border-line-darker rounded-lg mx-4 md:mx-auto">
+      <form className="w-full max-w-[700px] m-auto py-[52px] px-4 md:px-0 gap-8 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <FormField label="Nome do projeto" error={errors.name} required>
           <input
             id="name"

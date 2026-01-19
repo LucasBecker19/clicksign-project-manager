@@ -23,12 +23,12 @@ export default function ProjectsFilters({
   onCreateProject,
 }: ProjectsFiltersProps) {
   return (
-    <div className="flex items-center justify-between mb-[22px]">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-[22px]">
       <div className="flex items-center gap-2">
         <p className="heading-2xl">Projetos</p>
         <span className="text-accent font-normal text-[17px] leading-none tracking-normal align-middle">({totalCount})</span>
       </div>
-      <div className="flex items-center gap-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 w-full md:w-auto">
         <div className="flex items-center gap-2">
           <CustomSwitch
             checked={filter === "favorites"}
@@ -37,13 +37,13 @@ export default function ProjectsFilters({
           <span className="font-normal text-base leading-22 tracking-normal text-text-dark">Apenas Favoritos</span>
         </div>
 
-        <div>
+        <div className="w-full md:w-auto">
           <Select
             name="orderBy"
             id="orderBy"
             value={sortOption}
             onChange={(e) => onSortChange(e.target.value as ProjectsFiltersProps["sortOption"])}
-            className="border border-accent bg-white w-[296px] h-10"
+            className="border border-accent bg-white lg:w-[296px] h-10"
             sx={{
               borderRadius: "8px",
             }}

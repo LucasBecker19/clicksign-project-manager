@@ -30,13 +30,13 @@ export default function ProjectCard({ project, highlightQuery }: ProjectCardProp
     } = useProjectCardMenu(project);
 
     return (
-        <div className="flex flex-col w-fit">
-            <div className="rounded-tr-2xl rounded-tl-2xl relative w-[346px] h-[231px]">
+        <div className="flex flex-col w-full max-w-[346px]">
+            <div className="rounded-tr-2xl rounded-tl-2xl relative w-full aspect-video">
                 <Image
                     src={project.coverImage || "/images/project-card-placeholder.svg"}
                     alt={project.name}
                     fill
-                    sizes="346px"
+                    sizes="(max-width: 346px) 100vw, 346px"
                     className="object-cover rounded-tr-2xl rounded-tl-2xl"
                 />
                 <button

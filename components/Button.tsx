@@ -27,8 +27,8 @@ function Button({ icon: Icon, title, onClick, type = "button", variant = "regula
         <button
             type={type}
             disabled={disabled}
-            className={`rounded-button flex items-center justify-center gap-4 ${sizes[size]} ${variants[variant]} ${wfull ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover-zoom'}`}
-            style={width ? { width } : undefined}
+            className={`rounded-button flex items-center justify-center gap-4 ${sizes[size]} ${variants[variant]} ${width || wfull ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover-zoom'}`}
+            style={width ? { maxWidth: width } : undefined}
             onClick={onClick}
         >
             {Icon}
