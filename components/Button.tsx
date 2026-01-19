@@ -3,7 +3,8 @@
 type ButtonProps = {
     icon?: React.ReactNode;
     title: string;
-    action: () => void;
+    action?: () => void;
+    type?: "button" | "submit" | "reset";
     variant?: "regular" | "outline";
     size?: "large" | "medium";
     wfull?: boolean;
@@ -11,7 +12,7 @@ type ButtonProps = {
     disabled?: boolean;
 };
 
-function Button({ icon: Icon, title, action, variant = "regular", size = "medium", wfull = false, width, disabled = false }: ButtonProps) {
+function Button({ icon: Icon, title, action = () => {}, type = "button", variant = "regular", size = "medium", wfull = false, width, disabled = false }: ButtonProps) {
     const sizes = {
         large: "py-3.5 px-8 text-xl",
         medium: "py-2 px-6 text-base",
@@ -24,7 +25,7 @@ function Button({ icon: Icon, title, action, variant = "regular", size = "medium
 
     return (
         <button
-            type="button"
+            type={type}
             disabled={disabled}
             className={`rounded-button flex items-center justify-center gap-4 ${sizes[size]} ${variants[variant]} ${wfull ? 'w-full' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover-zoom'}`}
             style={width ? { width } : undefined}

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Button from './Button';
+import { isValidImageFile, readFileAsDataURL } from '@/utils/file';
 
 type ImageUploadProps = {
   onImageChange?: (file: File | null) => void;
@@ -13,15 +14,20 @@ export default function ImageUpload({ onImageChange, initialImage }: ImageUpload
   const [imagePreview, setImagePreview] = useState<string | null>(initialImage || null);
   const [isDragging, setIsDragging] = useState(false);
 
+  const updatePreview = async (file: File) => {
+    try {
+      const dataUrl = await readFileAsDataURL(file);
+      setImagePreview(dataUrl);
+      onImageChange?.(file);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      onImageChange?.(file);
+    if (isValidImageFile(file)) {
+      updatePreview(file);
     }
   };
 
@@ -39,13 +45,8 @@ export default function ImageUpload({ onImageChange, initialImage }: ImageUpload
     event.preventDefault();
     setIsDragging(false);
     const file = event.dataTransfer.files?.[0];
-    if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      onImageChange?.(file);
+    if (isValidImageFile(file)) {
+      updatePreview(file);
     }
   };
 
