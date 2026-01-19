@@ -14,9 +14,9 @@ export default function RemoveProjectModal({ isOpen, onClose, onConfirm, project
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-[#181818E5] backdrop-blur-[4px] flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-[var(--color-overlay)] backdrop-blur-[4px] flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-8 w-full max-w-[582px] text-center">
-                <div className="flex justify-center items-center mx-auto mb-4 mt-[-64px] rounded-full bg-accent w-16 h-16 shadow-[0px_4px_4px_0px_#00000040]">
+                <div className="flex justify-center items-center mx-auto mb-4 mt-[-64px] rounded-full bg-accent w-16 h-16 shadow-[var(--shadow-strong)]">
                     <Image src="/images/white_trash.svg" alt="Remover" width={20} height={20} />
                 </div>
                 <h2 className="text-[22px] font-semibold text-title mb-6">Remover projeto</h2>

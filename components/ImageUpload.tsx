@@ -81,7 +81,7 @@ export default function ImageUpload({ onImageChange, initialImage }: ImageUpload
             height={0}
           />
           <div
-            className="absolute top-6 right-6 flex justify-center items-center rounded-full bg-white w-8 h-8 shadow-[0px_4px_4px_0px_#00000040] cursor-pointer hover-zoom"
+            className="absolute top-6 right-6 flex justify-center items-center rounded-full bg-white w-8 h-8 shadow-[var(--shadow-strong)] cursor-pointer hover-zoom"
             onClick={handleRemoveImage}
           >
             <Image src="/images/trash.svg" alt="Remover" width={20} height={20} />

@@ -1,31 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f2ff;
-  --content-background: #ffffff;
-  --dark: #1C1930;
+  --color-bg: #f4f2ff;
+  --color-surface: #ffffff;
+  --color-text-strong: #1C1930;
   --shadow-header: 0px 4px 4px 0px #00000040;
-  --title: #1F1283;
-  --description: #717171;
-  --accent: #695CCD;
-  --text-dark: #1E1E1E;
-  --line: #ECECEC;
-  --line-darker: #DCDCDC;
-  --highlight: #FFB23D;
+  --color-heading: #1F1283;
+  --color-text-muted: #717171;
+  --color-primary: #695CCD;
+  --color-text: #1E1E1E;
+  --color-border: #ECECEC;
+  --color-border-strong: #DCDCDC;
+  --color-accent-strong: #FFB23D;
+  --color-error: #9F0000;
+  --color-error-strong: #C40000;
+  --shadow-strong: 0px 4px 4px 0px #00000040;
+  --color-overlay: #181818E5;
+  --color-neutral-600: #53525D;
+  /* Legacy aliases kept for current utility classes */
+  --color-accent: var(--color-primary);
+  --color-title: var(--color-heading);
+  --color-description: var(--color-text-muted);
+  --color-dark: var(--color-text-strong);
+  --color-text-dark: var(--color-text);
+  --color-line: var(--color-border);
+  --color-line-darker: var(--color-border-strong);
+  --color-highlight: var(--color-accent-strong);
+  --color-error-text: var(--color-error);
+  --color-error-border: var(--color-error-strong);
+  --color-content-background: var(--color-surface);
+  --color-background: var(--color-bg);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-content-background: var(--content-background);
-  --color-dark: var(--dark);
+  --color-background: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-text-strong: var(--color-text-strong);
   --shadow-header: var(--shadow-header);
-  --color-title: var(--title);
-  --color-description: var(--description);
-  --color-accent: var(--accent);
-  --color-text-dark: var(--text-dark);
-  --color-line: var(--line);
-  --color-line-darker: var(--line-darker);
-  --color-highlight: var(--highlight);
+  --color-heading: var(--color-heading);
+  --color-text-muted: var(--color-text-muted);
+  --color-primary: var(--color-primary);
+  --color-text: var(--color-text);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+  --color-accent-strong: var(--color-accent-strong);
+  --color-error: var(--color-error);
+  --color-error-strong: var(--color-error-strong);
+  --shadow-strong: var(--shadow-strong);
+  --color-overlay: var(--color-overlay);
+  --color-neutral-600: var(--color-neutral-600);
+  /* Legacy aliases kept for current utility classes */
+  --color-accent: var(--color-primary);
+  --color-title: var(--color-heading);
+  --color-description: var(--color-text-muted);
+  --color-dark: var(--color-text-strong);
+  --color-text-dark: var(--color-text);
+  --color-line: var(--color-border);
+  --color-line-darker: var(--color-border-strong);
+  --color-highlight: var(--color-accent-strong);
+  --color-error-text: var(--color-error);
+  --color-error-border: var(--color-error-strong);
+  --color-content-background: var(--color-surface);
+  --color-background: var(--color-bg);
   --font-sans: var(--font-encode-sans), ui-sans-serif, system-ui, sans-serif;
   /* Custom design tokens */
   --radius-button: 26px;

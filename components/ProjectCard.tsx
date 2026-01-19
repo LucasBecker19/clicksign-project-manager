@@ -94,7 +94,7 @@ export default function ProjectCard({ project, highlightQuery }: ProjectCardProp
                     {isMenuOpen && (
                         <div id={menuId}>
                             <div className="absolute right-[26px] bottom-0 bg-white rounded-[2px] h-4 w-4 border-0 rotate-45"></div>
-                            <div className="absolute right-4 bottom-[-95px] bg-white rounded-lg min-w-[120px] z-10 overflow-hidden shadow-[0px_4px_4px_0px_#00000040]">
+                            <div className="absolute right-4 bottom-[-95px] bg-white rounded-lg min-w-[120px] z-10 overflow-hidden shadow-[var(--shadow-strong)]">
                                 <button type="button" className="cursor-pointer w-full text-left px-5 py-[14px] hover:bg-gray-100 font-normal text-base leading-4 text-accent border-b border-line" onClick={handleEditProject}>
                                     <div className="flex items-center gap-3">
                                         <Image src="/images/edit.svg" alt="" width={24} height={24} />
@@ -115,7 +115,7 @@ export default function ProjectCard({ project, highlightQuery }: ProjectCardProp
                     )}
                 </div>
             </div>
-            <div className="rounded-br-2xl rounded-bl-2xl flex flex-col gap-4 p-6 border border-[#DCDCDC] bg-white">
+            <div className="rounded-br-2xl rounded-bl-2xl flex flex-col gap-4 p-6 border border-[var(--color-border-strong)] bg-white">
                 <div className="flex flex-col gap-3 border-b-1 border-line pb-4">
                     <p className="font-bold text-xl leading-none text-title">{renderHighlightedText(project.name, highlightQuery)}</p>
                     <div className="flex items-center">

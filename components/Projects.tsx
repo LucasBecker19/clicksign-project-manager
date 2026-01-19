@@ -124,8 +124,8 @@ export default function Projects () {
                                     borderRadius: '8px',
                                 }}
                             >
-                                <MenuItem sx={{ borderBottom: '1px solid #ECECEC'}} value="alphabetical">Ordem alfabética</MenuItem>
-                                <MenuItem sx={{ borderBottom: '1px solid #ECECEC'}} value="recent">Iniciados mais recentes</MenuItem>
+                                <MenuItem sx={{ borderBottom: '1px solid var(--color-border)'}} value="alphabetical">Ordem alfabética</MenuItem>
+                                <MenuItem sx={{ borderBottom: '1px solid var(--color-border)'}} value="recent">Iniciados mais recentes</MenuItem>
                                 <MenuItem value="deadline">Prazo mais próximo</MenuItem>
                             </Select>
                         </div>

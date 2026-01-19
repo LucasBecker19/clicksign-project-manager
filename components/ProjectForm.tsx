@@ -48,7 +48,8 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
     formState: { errors, isValid, isSubmitting },
   } = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
-    mode: 'onChange',
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
     defaultValues: {
       name: initialProject?.name ?? '',
       client: initialProject?.client ?? '',
@@ -98,22 +99,22 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
       <form className="w-[700px] m-auto py-[52px] gap-8 flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <div className="flex gap-2 items-center">
-            <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.name ? 'text-[#9F0000]' : 'text-accent'}`}>
+            <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.name ? 'text-[var(--color-error)]' : 'text-accent'}`}>
               Nome do projeto
             </span>
-            <span className="form-required-label">(Obrigatório)</span>
+            <span className={`form-required-label ${errors.name ? 'text-[var(--color-error)]' : ''}`}>(Obrigatório)</span>
           </div>
 
           <input
             id="name"
             type="text"
             {...register('name')}
-            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${errors.name ? 'border-[#C40000]' : 'border-description'}`}
+            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${errors.name ? 'border-[var(--color-error-strong)]' : 'border-description'}`}
             autoComplete="off"
             required
           />
           {errors.name && (
-            <p className="mt-1 text-sm text-[#C40000] font-normal leading-[22px]">
+            <p className="mt-1 text-sm text-[var(--color-error-strong)] font-normal leading-[22px]">
               {errors.name.message}
             </p>
           )}
@@ -121,22 +122,22 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
 
         <div className="form-group">
           <div className="flex gap-2 items-center">
-            <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.client ? 'text-[#9F0000]' : 'text-accent'}`}>
+            <span className={`font-medium text-lg leading-[22px] align-bottom ${errors.client ? 'text-[var(--color-error)]' : 'text-accent'}`}>
               Cliente
             </span>
-            <span className="form-required-label">(Obrigatório)</span>
+            <span className={`form-required-label ${errors.client ? 'text-[var(--color-error)]' : ''}`}>(Obrigatório)</span>
           </div>
 
           <input
             id="client"
             type="text"
             {...register('client')}
-            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${errors.client ? 'border-[#C40000]' : 'border-description'}`}
+            className={`mt-1 border rounded-lg w-full h-[40px] bg-white p-2 ${errors.client ? 'border-[var(--color-error-strong)]' : 'border-description'}`}
             autoComplete="off"
             required
           />
           {errors.client && (
-            <p className="mt-1 text-sm text-[#C40000] font-normal leading-[22px]">
+            <p className="mt-1 text-sm text-[var(--color-error-strong)] font-normal leading-[22px]">
               {errors.client.message}
             </p>
           )}
