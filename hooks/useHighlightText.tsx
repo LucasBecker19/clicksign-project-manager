@@ -12,7 +12,7 @@ export const useHighlightText = () => {
         return parts.map((part, index) => {
             if (regex.test(part)) {
                 return (
-                    <span key={index} style={{ backgroundColor: 'var(--highlight)', fontWeight: 'bold' }}>
+                    <span key={index} style={{ backgroundColor: 'var(--highlight)', fontWeight: 'bold', color: 'white' }}>
                         {part}
                     </span>
                 );
