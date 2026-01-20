@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -124,7 +123,7 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
           />
         </FormField>
 
-        <div className="flex items-center gap-10">
+        <div className="flex flex-col md:flex-row items-center gap-10">
           <Controller
             name="startDate"
             control={control}
