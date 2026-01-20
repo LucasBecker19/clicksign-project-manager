@@ -82,6 +82,28 @@ describe('projectFormSchema', () => {
 
       expect(result.success).toBe(false);
     });
+
+    it('should reject when startDate is after endDate', () => {
+      const result = projectFormSchema.safeParse({
+        name: 'Test Project',
+        client: 'Test Client',
+        startDate: '2026-03-01',
+        endDate: '2026-02-01',
+      });
+
+      expect(result.success).toBe(false);
+    });
+
+    it('should accept when startDate equals endDate', () => {
+      const result = projectFormSchema.safeParse({
+        name: 'Test Project',
+        client: 'Test Client',
+        startDate: '2026-02-01',
+        endDate: '2026-02-01',
+      });
+
+      expect(result.success).toBe(true);
+    });
   });
 
   describe('valid form', () => {

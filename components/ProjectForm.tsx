@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import DateInput from './DateInput';
@@ -24,6 +24,26 @@ export const projectFormSchema = z.object({
   client: z.string().trim().min(1, 'Por favor, digite ao menos uma palavra'),
   startDate: z.string().min(1, 'Selecione uma data válida'),
   endDate: z.string().min(1, 'Selecione uma data válida'),
+}).superRefine((data, ctx) => {
+  const start = new Date(data.startDate);
+  const end = new Date(data.endDate);
+
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+    return;
+  }
+
+  if (start > end) {
+    ctx.addIssue({
+      code: 'custom',
+      message: 'A data inicial não pode ser posterior à data final',
+      path: ['startDate'],
+    });
+    ctx.addIssue({
+      code: 'custom',
+      message: 'A data final não pode ser anterior à data inicial',
+      path: ['endDate'],
+    });
+  }
 });
 
 type ProjectFormValues = z.infer<typeof projectFormSchema>;
@@ -45,6 +65,7 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
     register,
     handleSubmit,
     control,
+    trigger,
     formState: { errors, isValid, isSubmitting },
   } = useForm<ProjectFormValues>({
     resolver: zodResolver(projectFormSchema),
@@ -57,6 +78,25 @@ export default function ProjectForm({ initialProject, isEditMode = false }: Proj
       endDate: initialProject?.endDate ?? '',
     },
   });
+
+  const [watchStartDate, watchEndDate] = useWatch({ control, name: ['startDate', 'endDate'] });
+  const hasRunDateValidation = useRef(false);
+
+  useEffect(() => {
+    if (!hasRunDateValidation.current) {
+      hasRunDateValidation.current = true;
+      return;
+    }
+
+    const start = watchStartDate ? new Date(watchStartDate) : null;
+    const end = watchEndDate ? new Date(watchEndDate) : null;
+
+    if (!start || !end || Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) {
+      return;
+    }
+
+    void trigger(['startDate', 'endDate']);
+  }, [watchStartDate, watchEndDate, trigger]);
 
   const handleImageChange = (file: File | null) => {
     setCoverImage(file);
