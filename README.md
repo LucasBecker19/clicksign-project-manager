@@ -2,6 +2,8 @@
 
 Este projeto é uma aplicação web desenvolvida para gerenciamento de projetos, construída com foco em performance, escalabilidade e boas práticas de front-end.
 
+Link do vercel: https://clicksign-project-manager-khaki.vercel.app/
+
 ## Tecnologias Utilizadas
 
 - **Next.js 16**: Framework React com suporte a renderização híbrida (SSR/SSG) e App Router.
